@@ -1,6 +1,7 @@
 *.gem
 *.bundle
 *.o
+.rvmrc
 Makefile
 Gemfile.lock
 pkg/*
