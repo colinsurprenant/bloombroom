@@ -1,5 +1,5 @@
 /*
- * taken from https://github.com/robey/rbfnv with 64 bits fixes from forks
+ * based on https://github.com/robey/rbfnv with various fixes from forks
  */
 
 #include <stdint.h>

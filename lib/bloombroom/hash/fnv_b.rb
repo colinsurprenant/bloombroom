@@ -1,4 +1,4 @@
-# taken from https://github.com/jakedouglas/fnv-ruby
+# based on https://github.com/jakedouglas/fnv-ruby
 
 module Bloombroom
   class FNVB

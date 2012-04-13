@@ -1,4 +1,4 @@
-# BitField inspired by Peter Cooper's http://snippets.dzone.com/posts/show/4234
+# inspired by Peter Cooper's http://snippets.dzone.com/posts/show/4234
 # 
 # create a bit field 1000 bits wide
 #   bf = BitField.new(1000)
@@ -45,12 +45,14 @@ module Bloombroom
     # set a bit to 1
     # @param position [Fixnum] bit position
     def set(position)
+      # duplicated code to avoid a method call
       @field[position / ELEMENT_WIDTH] |= 1 << (position % ELEMENT_WIDTH)
     end
 
     # set a bit to 0
     # @param position [Fixnum] bit position
     def unset(position)
+      # duplicated code to avoid a method call
       @field[position / ELEMENT_WIDTH] &= ~(1 << (position % ELEMENT_WIDTH))
     end
 

@@ -23,11 +23,11 @@ module Bloombroom
     
     # produce k hash values for key
     def multi_hash(key)
-      # we simulate n hash functions by having just two hash functions
+      # simulate n hash functions by having just two hash functions
       # see http://citeseer.ist.psu.edu/viewdoc/download?doi=10.1.1.152.579&rep=rep1&type=pdf
       # see http://willwhim.wordpress.com/2011/09/03/producing-n-hash-functions-by-hashing-only-once/
       #
-      # we fake two hash functions by using the upper/lower 32 bits of a 64 bits FNV1a hash
+      # fake two hash functions by using the upper/lower 32 bits of a 64 bits FNV1a hash
 
       h = Bloombroom::FNVFFI.fnv1a_64(key)
       a = (h & 0xFFFFFFFF00000000) >> 32
