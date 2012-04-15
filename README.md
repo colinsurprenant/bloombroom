@@ -9,15 +9,15 @@ a (native, C-EXT, FFI) fast FNV hash or a bit field implementation.
 Everything has been tested in both Ruby 1.9.2 and JRuby 1.6.7.
 
 ``` sh
-bundle install
-rake make
+$ bundle install
+$ rake make
 ```
 
 If switching to/from Ruby/JRuby do not forget to 
 
 ``` sh
-rake clean
-rake make
+$ rake clean
+$ rake make
 ```
 
 ### Benchmarks
@@ -30,13 +30,10 @@ $ ruby benchmark/bloom_filter.rb
 ```
 
 ## Author
-Colin Surprenant, [@colinsurprenant][twitter], [colin.surprenant@needium.com][needium], [colin.surprenant@gmail.com][gmail], [http://github.com/colinsurprenant][github]
-
+Colin Surprenant, [@colinsurprenant][twitter], [http://github.com/colinsurprenant][github], colin.surprenant@needium.com, colin.surprenant@gmail.com
 
 ## License
 Bloombroom is distributed under the Apache License, Version 2.0. 
 
-[needium]: colin.surprenant@needium.com
-[gmail]: colin.surprenant@gmail.com
 [twitter]: http://twitter.com/colinsurprenant
 [github]: http://github.com/colinsurprenant
