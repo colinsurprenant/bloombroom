@@ -11,7 +11,7 @@ module Bloombroom
   # 10000 elements, 0.1% error rate: m = 10000 * 15 bits -> 18k of memory, k = 0.7 * (10000 * 15 bits / 10000) = 11 hash functions
   class BloomFilter
 
-    attr_reader :bits
+    attr_reader :m, :k, :bits, :size
 
     # @param m [Fixnum] filter size in bits
     # @param k [Fixnum] number of hashing functions
@@ -19,6 +19,16 @@ module Bloombroom
       @bits = BitField.new(m)
       @m = m
       @k = k
+      @size = 0
+    end
+
+    # 
+    # @param capacity [Fixnum] number of keys
+    # @param error [Float] error rate (0.0 < error < 1.0)
+    def self.find_m_k(capacity, error)
+      m = (capacity * Math.log(error) / Math.log(1.0 / 2**Math.log(2))).ceil
+      k = (Math.log(2) * m / capacity).round
+      [m, k]
     end
     
     # produce k hash values for key
@@ -38,6 +48,7 @@ module Bloombroom
     
     def add(key)
       multi_hash(key).each{|position| @bits.set(position % @m)}
+      @size += 1
     end
     
     def include?(key)

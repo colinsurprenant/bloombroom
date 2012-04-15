@@ -36,4 +36,21 @@ describe Bloombroom::BloomFilter do
     bf.bits.total_set.should == 15
   end
 
+  it "should keep track of size" do
+    bf = Bloombroom::BloomFilter.new(1000, 5)
+    bf.size.should == 0
+    bf.add("abc1")
+    bf.size.should == 1
+    bf.add("abc2")
+    bf.size.should == 2
+  end
+
+  it "should find m and k" do
+    Bloombroom::BloomFilter.find_m_k(10000, 0.01).should == [95851, 7]
+    Bloombroom::BloomFilter.find_m_k(10000, 0.001).should == [143776, 10]
+    bf = Bloombroom::BloomFilter.new(*Bloombroom::BloomFilter.find_m_k(10000, 0.001))
+    bf.m.should == 143776
+    bf.k.should == 10
+  end
+
 end
