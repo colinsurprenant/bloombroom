@@ -1,6 +1,6 @@
-# Bloombroom v0.0.1
+# bloombroom v0.0.1
 
-Bloombroom - collection of bloomfilters, hashing, bitfields with various native/ext/ffi implementations for speed/compatibility.
+Collection of bloomfilters, hashing, bitfields with various native/ext/ffi implementations for speed/compatibility.
 
 This is a work-in-progress. Code is stable but not yet gemified/packaged. This is currently a nice codebase for anyone requiring a BloomFilter,
 a (native, C-EXT, FFI) fast FNV hash or a bit field implementation. 
