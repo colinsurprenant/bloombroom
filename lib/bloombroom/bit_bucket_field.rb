@@ -33,8 +33,8 @@ module Bloombroom
     # @param position [Fixnum] bucket position
     # @param value [Fixnum] bucket value
     def []=(position, value)
-      shift_bits = (position % @buckets_per_element) * @bits
-      element = position / @buckets_per_element
+      element, offset = position.divmod(@buckets_per_element)
+      shift_bits = offset * @bits
       if value == 0
         @field[element] &= ~(@bucket_mask << shift_bits)
       else
@@ -47,10 +47,23 @@ module Bloombroom
     # @param position [Fixnum] bucket position
     # @return [Fixnum] bucket value
     def [](position)
+      element, offset = position.divmod(@buckets_per_element)
       shift_bits = (position % @buckets_per_element) * @bits
-      (@field[position / @buckets_per_element] & (@bucket_mask << shift_bits)) >> shift_bits
+      (@field[element] & (@bucket_mask << shift_bits)) >> shift_bits
     end
     alias_method :get, :[]
+
+    def zero?(position)
+      element, offset = position.divmod(@buckets_per_element)
+      shift_bits = (position % @buckets_per_element) * @bits
+      (@field[element] & (@bucket_mask << shift_bits)) == 0
+    end
+
+    def inc(position)
+    end
+
+    def dec(position)
+    end
     
     # iterate over each bucket
     def each(&block)
