@@ -41,6 +41,7 @@ module Bloombroom
     def [](position)
       @field[position / ELEMENT_WIDTH] & 1 << (position % ELEMENT_WIDTH) > 0 ? 1 : 0
     end
+    alias_method :get, :[]
 
     # set a bit to 1
     # @param position [Fixnum] bit position
@@ -63,6 +64,14 @@ module Bloombroom
       @field[position / ELEMENT_WIDTH] & 1 << (position % ELEMENT_WIDTH) > 0
     end
     
+    # check if bit is not set
+    # @param position [Fixnum] bit position
+    # @return [Boolean] true if bit is not set
+    def zero?(position)
+      # duplicated code to avoid a method call
+      @field[position / ELEMENT_WIDTH] & 1 << (position % ELEMENT_WIDTH) == 0
+    end
+
     # iterate over each bit
     def each(&block)
       @size.times { |position| yield self[position] }

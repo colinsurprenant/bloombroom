@@ -8,6 +8,7 @@ describe Bloombroom::BitBucketField do
     100.times.each do |i|
       bf[i].should == 0
     end
+    bf.total_set.should == 0
   end
 
   it "should set value" do
@@ -64,7 +65,7 @@ describe Bloombroom::BitBucketField do
   it "should randomly set" do
     bf = Bloombroom::BitBucketField.new(4, 1000)
     random_buckets = Array.new(500) {rand(1000)}.uniq
-    random_values = Array.new(random_buckets.size) {rand(16)}
+    random_values = Array.new(random_buckets.size) {rand(16)} # values between 0 and 15
     bucket_value = random_buckets.zip(random_values)
     other_buckets = Array.new(1000) {|i| i} - random_buckets
 
@@ -86,17 +87,46 @@ describe Bloombroom::BitBucketField do
     bf.size.should == 56
   end
 
+  it "should report total_set" do
+    bf = Bloombroom::BitBucketField.new(16, 100)
+    bf[0] = (2 ** 16) - 1
+    bf[1] = (2 ** 16) - 1
+    bf[2] = (2 ** 16) - 1
+    bf[4] = (2 ** 16) - 1
+    bf[50] = 1
+    bf.total_set.should == 5
+
+    bf = Bloombroom::BitBucketField.new(4, 1000)
+    random_buckets = Array.new(500) {rand(1000)}.uniq
+    random_values = Array.new(random_buckets.size) {rand(14) + 1} # values between 1 and 15
+    bucket_value = random_buckets.zip(random_values)
+    other_buckets = Array.new(1000) {|i| i} - random_buckets
+
+    bucket_value.each{|b, v| bf[b] = v}
+    bf.total_set.should == random_buckets.size
+
+    other_buckets.each{|i| bf[i] = 0}
+    other_buckets.each{|i| bf[i].should == 0}
+    bf.total_set.should == bucket_value.size
+
+    random_buckets.each{|i| bf[i] = 0}
+    bf.total_set.should == 0
+  end
+
   it "should produce bit string using to_s" do
     bf = Bloombroom::BitBucketField.new(4, 1)
     bf[0] = 1
     bf.to_s.should == "0001"
+    bf.to_s(10).should == "1"
     bf[0] = 15
     bf.to_s.should == "1111"
+    bf.to_s(10).should == "15"
 
     bf = Bloombroom::BitBucketField.new(4, 2)
     bf[0] = 3
     bf[1] = 8
     bf.to_s.should == "00111000"
+    bf.to_s(10).should == "3 8"
 
     bf = Bloombroom::BitBucketField.new(4, 8)
     bf[0] = 1
@@ -104,6 +134,9 @@ describe Bloombroom::BitBucketField do
     bf[4] = 3
     bf[6] = 4
     bf.to_s.should == "00010000001000000011000001000000"
+    bf.to_s(10).should == "1 0 2 0 3 0 4 0"
+
+    lambda{bf.to_s(16)}.should raise_error
   end
 
 end

@@ -68,6 +68,24 @@ describe Bloombroom::BitField do
     random_bits.each{|i| bf.include?(i).should be_false}
   end
 
+  it "should randomly set and unset and support zero?" do
+    bf = Bloombroom::BitField.new(1000)
+    random_bits = (0..250).map{|i| rand(1000)}
+    other_bits = (0..999).map{|i| i} - random_bits
+
+    random_bits.each{|i| bf.set(i)}
+    other_bits.each{|i| bf.zero?(i).should be_true}
+    random_bits.each{|i| bf.zero?(i).should be_false}
+
+    other_bits.each{|i| bf.unset(i)}
+    other_bits.each{|i| bf.zero?(i).should be_true}
+    random_bits.each{|i| bf.zero?(i).should be_false}
+
+    random_bits.each{|i| bf.unset(i)}
+    other_bits.each{|i| bf.zero?(i).should be_true}
+    random_bits.each{|i| bf.zero?(i).should be_true}
+  end
+
   it "should report size" do
     bf = Bloombroom::BitField.new(456)
     bf.size.should == 456

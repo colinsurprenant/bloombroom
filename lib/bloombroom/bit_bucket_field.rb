@@ -71,8 +71,21 @@ module Bloombroom
     end
     
     # returns the field as a string like "0101010100111100," etc.
-    def to_s
-      inject("") { |a, b| a + "%0#{@bits}b" % b }
-    end    
+    def to_s(base = 1)
+      case base 
+      when 1
+        inject("") { |a, b| a + "%0#{@bits}b" % b }
+      when 10
+        self.inject("") { |a, b| a + "%1d " % b }.strip
+      else
+        raise(ArgumentError, "unsupported base")
+      end
+    end
+
+    # returns the total number of non zero buckets
+    def total_set
+      self.inject(0) { |a, bucket| a += bucket.zero? ? 0 : 1; a }
+    end
+
   end
 end
