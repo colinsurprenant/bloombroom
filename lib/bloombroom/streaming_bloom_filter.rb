@@ -5,12 +5,6 @@ require 'thread'
 
 module Bloombroom
 
-  # BloomFilter false positive probability rule of thumb: see http://www.igvita.com/2008/12/27/scalable-datasets-bloom-filters-in-ruby/
-  # a Bloom filter with a 1% error rate and an optimal value for k only needs 9.6 bits per key, and each time we add 4.8 bits 
-  # per element we decrease the error rate by ten times. 
-  #
-  # 10000 elements, 1% error rate: m = 10000 * 10 bits -> 12k of memory, k = 0.7 * (10000 * 10 bits / 10000) = 7 hash functions
-  # 10000 elements, 0.1% error rate: m = 10000 * 15 bits -> 18k of memory, k = 0.7 * (10000 * 15 bits / 10000) = 11 hash functions
   class StreamingBloomFilter
 
     attr_reader :m, :k, :ttl, :buckets
