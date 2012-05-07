@@ -3,9 +3,9 @@ $:.unshift File.dirname(__FILE__) + '/../'
 
 require "benchmark"
 require "digest/sha1"
-require 'bloombroom/streaming_bloom_filter'
-require 'bloombroom/bloom_filter'
-require 'bloombroom/bloom_helper'
+require 'bloombroom/filter/streaming_bloom_filter'
+require 'bloombroom/filter/bloom_filter'
+require 'bloombroom/filter/bloom_helper'
 
 module Bloombroom
 

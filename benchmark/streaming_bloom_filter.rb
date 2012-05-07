@@ -3,8 +3,8 @@ $:.unshift File.dirname(__FILE__) + '/../'
 
 require "benchmark"
 require "digest/sha1"
-require 'bloombroom/streaming_bloom_filter'
-require 'bloombroom/bloom_helper'
+require 'bloombroom/filter/streaming_bloom_filter'
+require 'bloombroom/filter/bloom_helper'
 
 keys = 100000.times.map{|i| Digest::SHA1.hexdigest("#{i}#{rand(1000000)}")}
 slots = 10.times.map{|i| 10000.times.map{|i| Digest::SHA1.hexdigest("#{i}#{rand(1000000)}")}} 

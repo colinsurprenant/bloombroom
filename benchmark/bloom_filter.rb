@@ -3,7 +3,7 @@ $:.unshift File.dirname(__FILE__) + '/../'
 
 require "benchmark"
 require "digest/sha1"
-require 'bloombroom/bloom_filter'
+require 'bloombroom/filter/bloom_filter'
 
 keys = 100000.times.map{|i| Digest::SHA1.hexdigest("#{i}#{rand(1000000)}")}
 
