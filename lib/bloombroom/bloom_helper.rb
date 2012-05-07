@@ -6,10 +6,11 @@ module Bloombroom
   class BloomHelper
 
     # compute optimal m and k for a given capacity and error rate
-    # @param capacity [Fixnum] number of keys
-    # @param error [Float] error rate (0.0 < error < 1.0)
+    # @param capacity [Fixnum] number of expected keys
+    # @param error [Float] error rate (0.0 < error < 1.0). Ex: 1% == 0.01, 0.1% == 0.001, ...
     def self.find_m_k(capacity, error)
-      m = (capacity * Math.log(error) / Math.log(1.0 / 2**Math.log(2))).ceil
+      # thanks to http://www.siaris.net/index.cgi/Programming/LanguageBits/Ruby/BloomFilter.rdoc
+      m = (capacity * Math.log(error) / Math.log(1.0 / 2 ** Math.log(2))).ceil
       k = (Math.log(2) * m / capacity).round
       [m, k]
     end
