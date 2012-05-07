@@ -10,6 +10,8 @@ module Bloombroom
   #
   # 10000 elements, 1% error rate: m = 10000 * 10 bits -> 12k of memory, k = 0.7 * (10000 * 10 bits / 10000) = 7 hash functions
   # 10000 elements, 0.1% error rate: m = 10000 * 15 bits -> 18k of memory, k = 0.7 * (10000 * 15 bits / 10000) = 11 hash functions
+  #
+  # Bloombroom::BloomHelper.find_m_k can be used to compute optimal m & k values for a required capacity and error rate.
   class BloomFilter
 
     attr_reader :m, :k, :bits, :size
