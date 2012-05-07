@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'bloombroom/bit_bucket_field'
+require 'bloombroom/bits/bit_bucket_field'
 
 describe Bloombroom::BitBucketField do
 
@@ -125,7 +125,7 @@ describe Bloombroom::BitBucketField do
     bf = Bloombroom::BitBucketField.new(4, 2)
     bf[0] = 3
     bf[1] = 8
-    bf.to_s.should == "00111000"
+    bf.to_s.should == "0011 1000"
     bf.to_s(10).should == "3 8"
 
     bf = Bloombroom::BitBucketField.new(4, 8)
@@ -133,7 +133,7 @@ describe Bloombroom::BitBucketField do
     bf[2] = 2
     bf[4] = 3
     bf[6] = 4
-    bf.to_s.should == "00010000001000000011000001000000"
+    bf.to_s.should == "0001 0000 0010 0000 0011 0000 0100 0000"
     bf.to_s(10).should == "1 0 2 0 3 0 4 0"
 
     lambda{bf.to_s(16)}.should raise_error

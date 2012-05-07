@@ -3,13 +3,12 @@
 # create a bit field 1000 bits wide
 #   bf = BitField.new(1000)
 #
-# setting and reading bits
 #   bf[100] = 1 or bf.set(100)
-#   bf[100] => 1
+#   bf[100] => 1 or bg.get(100) => 1
 #   bf[100] = 0 or bf.unset(100)
+#   bf.zero?(100) => true
 #
-# more
-#   bf.to_s = "10101000101010101"  (example)
+#   bf.to_s = "10101000101010101"
 #   bf.total_set => 10  (example - 10 bits are set to "1")
 
 module Bloombroom

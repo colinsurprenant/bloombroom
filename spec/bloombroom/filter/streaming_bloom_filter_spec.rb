@@ -1,6 +1,6 @@
 require 'spec_helper'
-require 'bloombroom/streaming_bloom_filter'
-require 'bloombroom/bloom_helper'
+require 'bloombroom/filter/streaming_bloom_filter'
+require 'bloombroom/filter/bloom_helper'
 
 describe Bloombroom::StreamingBloomFilter do
 

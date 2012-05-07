@@ -1,6 +1,6 @@
 require 'ffi/bloombroom/hash/fnv'
-require 'bloombroom/bit_bucket_field'
-require 'bloombroom/bloom_helper'
+require 'bloombroom/bits/bit_bucket_field'
+require 'bloombroom/filter/bloom_helper'
 require 'thread'
 
 module Bloombroom

@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'bloombroom/bit_field'
+require 'bloombroom/bits/bit_field'
 
 describe Bloombroom::BitField do
 

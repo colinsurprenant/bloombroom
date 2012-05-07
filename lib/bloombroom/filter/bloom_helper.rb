@@ -1,5 +1,4 @@
 require 'ffi/bloombroom/hash/fnv'
-require 'bloombroom/bloom_helper'
 
 module Bloombroom
 

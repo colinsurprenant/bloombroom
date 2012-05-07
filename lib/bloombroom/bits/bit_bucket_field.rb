@@ -1,15 +1,14 @@
-# inspired by Peter Cooper's http://snippets.dzone.com/posts/show/4234
-# 
 # create a bit bucket field of 100 buckets of 4 bits
 #   bf = BitBucketField.new(4, 100)
 #
-# setting and reading buckets
 #   bf[10] = 5 or bf.set(10, 5)
-#   bf[10] => 5
+#   bf[10] => 5 or bf.get(10) => 5
 #   bf[10] = 0
+#   bf.zero?(10) => true
 #
-# more
-#   bf.to_s = "10101000101010101"  (example)
+#   bf.to_s = "10101000101010101"
+#   bf.to_s(2) = "10101000101010101"
+#   bf.to_s(10) = "5 23 7"
 
 module Bloombroom
   class BitBucketField
@@ -74,7 +73,7 @@ module Bloombroom
     def to_s(base = 2)
       case base 
       when 2
-        inject("") { |a, b| a + "%0#{@bits}b" % b }
+        inject("") { |a, b| a + "%0#{@bits}b " % b }.strip
       when 10
         self.inject("") { |a, b| a + "%1d " % b }.strip
       else
