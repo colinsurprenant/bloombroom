@@ -10,18 +10,18 @@ task :spec do
 end
 
 task :make do
-  Dir.chdir("ext/bloombroom/hash") do
+  Dir.chdir("ext/bloombroom/hash/cext") do
     ruby "extconf.rb"
     sh "make"
   end
+  cp "ext/bloombroom/hash/cext/cext_fnv.bundle", "lib/bloombroom/hash"
 
-  Dir.chdir("ffi/bloombroom/hash") do
+  Dir.chdir("ext/bloombroom/hash/ffi") do
     ruby "extconf.rb"
     sh "make"
   end
+  cp "ext/bloombroom/hash/ffi/ffi_fnv.bundle", "lib/bloombroom/hash"
 end
 
 CLEAN.include('ext/**/*{.o,.log,.so,.bundle}')
 CLEAN.include('ext/**/Makefile')
-CLEAN.include('ffi/**/*{.o,.log,.so,.bundle}')
-CLEAN.include('ffi/**/Makefile')

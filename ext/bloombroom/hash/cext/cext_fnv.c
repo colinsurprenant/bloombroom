@@ -81,7 +81,7 @@ VALUE rb_fnv1a_64(VALUE self, VALUE data) {
 VALUE rb_class;
 VALUE rb_module;
 
-void Init_fnv() {
+void Init_cext_fnv() {
   rb_module = rb_define_module("Bloombroom");
   rb_class = rb_define_class_under(rb_module, "FNVEXT", rb_cObject);
   rb_define_singleton_method(rb_class, "fnv1_32", rb_fnv1_32, 1);

@@ -1,13 +1,8 @@
-$:.unshift File.dirname(__FILE__) + '/../lib/'
-$:.unshift File.dirname(__FILE__) + '/../'
-
+require "bundler/setup"
 require "benchmark"
 require "digest/md5"
 require "digest/sha1"
-require 'bloombroom/hash/fnv_a'
-require 'bloombroom/hash/fnv_b'
-require 'ext/bloombroom/hash/fnv'
-require 'ffi/bloombroom/hash/fnv'
+require "bloombroom"
 
 n = 1000000
 puts("benchmarking for #{n} iterations")

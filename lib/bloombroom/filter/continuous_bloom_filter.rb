@@ -1,4 +1,4 @@
-require 'ffi/bloombroom/hash/fnv'
+require 'bloombroom/hash/ffi_fnv'
 require 'bloombroom/bits/bit_bucket_field'
 require 'bloombroom/filter/bloom_helper'
 require 'thread'

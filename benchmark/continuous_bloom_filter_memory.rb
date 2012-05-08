@@ -2,7 +2,7 @@ $:.unshift File.dirname(__FILE__) + '/../lib/'
 $:.unshift File.dirname(__FILE__) + '/../'
 
 require 'benchmark/memory'
-require 'lib/bloombroom/filter/continuous_bloom_filter'
+require "bloombroom"
 
 
 BLOOMFILTER_SIZE = 10000000

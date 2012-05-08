@@ -1,4 +1,4 @@
-require 'ffi/bloombroom/hash/fnv'
+require 'bloombroom/hash/ffi_fnv'
 
 module Bloombroom
 

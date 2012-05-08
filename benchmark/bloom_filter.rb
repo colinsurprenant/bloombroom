@@ -3,8 +3,7 @@ $:.unshift File.dirname(__FILE__) + '/../'
 
 require "benchmark"
 require "digest/sha1"
-require 'bloombroom/filter/bloom_filter'
-require 'bloombroom/filter/bloom_helper'
+require "bloombroom"
 
 KEYS_COUNT = 150000
 TEST_M_K = [0.1, 0.01, 0.001].map{|error| Bloombroom::BloomHelper.find_m_k(KEYS_COUNT, error)}
