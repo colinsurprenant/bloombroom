@@ -24,4 +24,5 @@ task :make do
 end
 
 CLEAN.include('ext/**/*{.o,.log,.so,.bundle}')
+CLEAN.include('lib/**/*{.o,.log,.so,.bundle}')
 CLEAN.include('ext/**/Makefile')

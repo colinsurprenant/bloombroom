@@ -7,15 +7,14 @@ Gem::Specification.new do |s|
   s.version     = Bloombroom::VERSION
   s.authors     = ["Colin Surprenant"]
   s.email       = ["colin.surprenant@gmail.com"]
-  s.homepage    = ""
-  s.summary     = %q{TODO: Write a gem summary}
-  s.description = %q{TODO: Write a gem description}
+  s.homepage    = "https://github/colinsurprenant/bloombroom"
+  s.summary     = "bloom filters and hashing"
+  s.description = "standard bloomfilter and continuous bloom filter for streams"
 
   s.rubyforge_project = "bloombroom"
 
-  s.files         = `git ls-files`.split("\n")
-  s.test_files    = `git ls-files -- {test,spec}/*`.split("\n")
-  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
+  s.files         = Dir.glob("{lib/**/*.rb}") + Dir.glob("{ext/**/*.(c|rb)}") + Dir.glob("{benchmarks/**/*.rb}") + %w(README.md CHANGELOG.md LICENSE.md)
+  s.test_files    = Dir.glob("{spec/**/*.rb}")
   s.require_paths = ["lib"]
   s.extensions    = ["ext/bloombroom/hash/cext/extconf.rb", "ext/bloombroom/hash/ffi/extconf.rb"]
 
