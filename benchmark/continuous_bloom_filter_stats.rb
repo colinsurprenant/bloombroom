@@ -13,6 +13,7 @@ module Bloombroom
   SLOTS_PER_FILTER = 3
   KEY_VALUE_RANGE = 100000000
 
+  puts("\ngenerating keys")
   slots = 32.times.map do
     add = {}
     KEYS_PER_SLOT.times.each{|i| add["#{i}#{Digest::SHA1.hexdigest(rand(KEY_VALUE_RANGE).to_s)}"] = true}
@@ -47,7 +48,7 @@ module Bloombroom
       bf.inc_time_slot
     end
   end
-  puts("Continuous BloomFilter #{n} adds + #{n} tests in #{"%.2f" % t}s, operations rate=#{"%.2f" % ((2 * n) / t)}/s")
+  puts("Continuous BloomFilter #{n} adds + #{n} tests in #{"%.2f" % t}s, #{"%2.0f" % ((2 * n) / t)} ops/s")
 
 
   puts("\nBloomFilter with capacity=#{capacity}, error=#{error}(#{error * 100}%) -> m=#{m}, k=#{k}")
@@ -63,6 +64,6 @@ module Bloombroom
       puts("false positives=#{false_positives}/#{slot.last.size} (#{"%.3f" % ((false_positives * 100) / Float(slot.last.size))})%, n=#{n}")
     end
   end
-  puts("BloomFilter #{n} adds + #{n} tests in #{"%.2f" % t}s, operations rate=#{"%.2f" % ((2 * n) / t)}/s")
+  puts("BloomFilter #{n} adds + #{n} tests in #{"%.2f" % t}s, #{"%2.0f" % ((2 * n) / t)} ops/s")
 
 end

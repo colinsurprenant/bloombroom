@@ -6,12 +6,15 @@ require "digest/sha1"
 require 'bloombroom/filter/continuous_bloom_filter'
 require 'bloombroom/filter/bloom_helper'
 
-keys = 100000.times.map{|i| Digest::SHA1.hexdigest("#{i}#{rand(1000000)}")}
-slots = 10.times.map{|i| 10000.times.map{|i| Digest::SHA1.hexdigest("#{i}#{rand(1000000)}")}} 
+KEYS_COUNT = 150000
+TEST_M_K = [0.1, 0.01, 0.001].map{|error| Bloombroom::BloomHelper.find_m_k(KEYS_COUNT, error)}
+
+keys = KEYS_COUNT.times.map{|i| Digest::SHA1.hexdigest("#{i}#{rand(1000000)}")}
+slots = 10.times.map{|i| (KEYS_COUNT / 3).times.map{|i| Digest::SHA1.hexdigest("#{i}#{rand(1000000)}")}} 
 
 if !!(defined?(RUBY_ENGINE) && RUBY_ENGINE == 'jruby')
   puts("warming JVM...")
-  bf = Bloombroom::SteamingBloomFilter.new(Bloombroom::BloomHelper.find_m_k(150000, 0.001))
+  bf = Bloombroom::SteamingBloomFilter.new(Bloombroom::BloomHelper.find_m_k(KEYS_COUNT, 0.001))
   keys.each{|key| bf.add(key)}
 end
 
@@ -19,40 +22,28 @@ puts("\nbenchmarking without expiration for #{keys.size} keys")
 
 reports = []
 Benchmark.bm(70) do |x|
-  [{:m_k => Bloombroom::BloomHelper.find_m_k(150000, 0.1)}, {:m_k => Bloombroom::BloomHelper.find_m_k(150000, 0.01)}, {:m_k => Bloombroom::BloomHelper.find_m_k(150000, 0.001)}].each do |h|
-    m_k = h[:m_k] 
-    bf = Bloombroom::ContinuousBloomFilter.new(*m_k, 0)
-    h[:add] = x.report("ContinuousBloomFilter add m=#{m_k.first}, k=#{m_k.last}") {keys.each{|key| bf.add(key)}}
-    h[:include] = x.report("ContinuousBloomFilter include? m=#{m_k.first}, k=#{m_k.last}") {keys.each{|key| bf.include?(key)}}
-
-    h[:addinclude] = x.report("ContinuousBloomFilter add/include m=#{m_k.first}, k=#{m_k.last}") do
-      slots.each do |slot|
-        slot.each{|key| bf.add(key)}
-        slot.each{|key| bf.include?(key)}
-        bf.inc_time_slot
-      end
-    end
-    reports << h
+  TEST_M_K.each do |m, k|
+    bf = Bloombroom::ContinuousBloomFilter.new(m, k, 0)
+    adds = x.report("ContinuousBloomFilter m=#{m}, k=#{k} add") {keys.each{|key| bf.add(key)}}
+    includes = x.report("ContinuousBloomFilter m=#{m}, k=#{k} include?") {keys.each{|key| bf.include?(key)}}
+    reports << {:m => m, :k => k, :adds => adds, :includes => includes}
   end
 end
 
 puts("\n")
 
 reports.each do |report|
-  puts("ContinuousBloomFilter add m=#{report[:m_k].first}, k=#{report[:m_k].last}        #{"%10.0f" % (keys.size / report[:add].real)} ops/sec")
-  puts("ContinuousBloomFilter include? m=#{report[:m_k].first}, k=#{report[:m_k].last}   #{"%10.0f" % (keys.size / report[:include].real)} ops/sec")
-  puts("ContinuousBloomFilter add/include m=#{report[:m_k].first}, k=#{report[:m_k].last}        #{"%10.0f" % (keys.size / report[:addinclude].real)} ops/sec")
+  puts("ContinuousBloomFilter m=#{report[:m]}, k=#{report[:k]} add          #{"%10.0f" % (keys.size / report[:adds].real)} ops/s")
+  puts("ContinuousBloomFilter m=#{report[:m]}, k=#{report[:k]} include?     #{"%10.0f" % (keys.size / report[:includes].real)} ops/s")
 end
 
-
-puts("\nbenchmarking with expiration for #{keys.size} keys")
+puts("\nbenchmarking with expiration for #{slots.map(&:size).reduce(&:+)} keys")
 
 reports = []
 Benchmark.bm(70) do |x|
-  [{:m_k => Bloombroom::BloomHelper.find_m_k(150000, 0.1)}, {:m_k => Bloombroom::BloomHelper.find_m_k(150000, 0.01)}, {:m_k => Bloombroom::BloomHelper.find_m_k(150000, 0.001)}].each do |h|
-    m_k = h[:m_k] 
-    bf = Bloombroom::ContinuousBloomFilter.new(*m_k, 0)
-    h[:addinclude] = x.report("ContinuousBloomFilter add/include m=#{m_k.first}, k=#{m_k.last}") do
+  TEST_M_K.each do |m, k|
+    bf = Bloombroom::ContinuousBloomFilter.new(m, k, 0)
+    addincludes = x.report("ContinuousBloomFilter m=#{m}, k=#{k} add+include") do
       slots.each do |slot|
         slot.each{|key| bf.add(key)}
         slot.each{|key| bf.include?(key)}
@@ -60,12 +51,12 @@ Benchmark.bm(70) do |x|
       end
     end
 
-    reports << h
+    reports << {:m => m, :k => k, :addincludes => addincludes}
   end
 end
 
 puts("\n")
 
 reports.each do |report|
-  puts("ContinuousBloomFilter add/include m=#{report[:m_k].first}, k=#{report[:m_k].last}        #{"%10.0f" % (keys.size / report[:addinclude].real)} ops/sec")
+  puts("ContinuousBloomFilter m=#{report[:m]}, k=#{report[:k]} add+include #{"%10.0f" % (slots.map(&:size).reduce(&:+) / report[:addincludes].real)} ops/s")
 end
