@@ -1,11 +1,11 @@
 require 'spec_helper'
-require 'bloombroom/filter/streaming_bloom_filter'
+require 'bloombroom/filter/continuous_bloom_filter'
 require 'bloombroom/filter/bloom_helper'
 
-describe Bloombroom::StreamingBloomFilter do
+describe Bloombroom::ContinuousBloomFilter do
 
   it "should add" do
-    bf = Bloombroom::StreamingBloomFilter.new(*Bloombroom::BloomHelper.find_m_k(10, 0.001), 0)
+    bf = Bloombroom::ContinuousBloomFilter.new(*Bloombroom::BloomHelper.find_m_k(10, 0.001), 0)
     bf.include?("abc1").should be_false
     bf.include?("abc2").should be_false
     bf.include?("abc3").should be_false
@@ -27,13 +27,13 @@ describe Bloombroom::StreamingBloomFilter do
   end
 
   it "should find m and k" do
-    bf = Bloombroom::StreamingBloomFilter.new(*Bloombroom::BloomHelper.find_m_k(10000, 0.001), 0)
+    bf = Bloombroom::ContinuousBloomFilter.new(*Bloombroom::BloomHelper.find_m_k(10000, 0.001), 0)
     bf.m.should == 143776
     bf.k.should == 10
   end
 
   it "should expire" do
-    bf = Bloombroom::StreamingBloomFilter.new(*Bloombroom::BloomHelper.find_m_k(100, 0.001), 0)
+    bf = Bloombroom::ContinuousBloomFilter.new(*Bloombroom::BloomHelper.find_m_k(100, 0.001), 0)
     bf.add("abc1")
     bf.include?("abc1").should be_true
 
@@ -73,7 +73,7 @@ describe Bloombroom::StreamingBloomFilter do
     bf.include?("abc3").should be_false
     bf.include?("abc4").should be_false
 
-    bf = Bloombroom::StreamingBloomFilter.new(*Bloombroom::BloomHelper.find_m_k(100, 0.1), 0)
+    bf = Bloombroom::ContinuousBloomFilter.new(*Bloombroom::BloomHelper.find_m_k(100, 0.1), 0)
     keys = []
     1.upto(100) do |i|
       keys << "#{i}test#{i}"
@@ -89,7 +89,7 @@ describe Bloombroom::StreamingBloomFilter do
   end
 
   it "should compute elapse" do
-    bf = Bloombroom::StreamingBloomFilter.new(*Bloombroom::BloomHelper.find_m_k(100, 0.1), 0)
+    bf = Bloombroom::ContinuousBloomFilter.new(*Bloombroom::BloomHelper.find_m_k(100, 0.1), 0)
     bf.send(:elapsed, 1, 1).should == 0
     bf.send(:elapsed, 1, 2).should == 1
     bf.send(:elapsed, 1, 3).should == 2

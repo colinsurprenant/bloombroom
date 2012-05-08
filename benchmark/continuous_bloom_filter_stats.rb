@@ -3,7 +3,7 @@ $:.unshift File.dirname(__FILE__) + '/../'
 
 require "benchmark"
 require "digest/sha1"
-require 'bloombroom/filter/streaming_bloom_filter'
+require 'bloombroom/filter/continuous_bloom_filter'
 require 'bloombroom/filter/bloom_filter'
 require 'bloombroom/filter/bloom_helper'
 
@@ -33,8 +33,8 @@ module Bloombroom
   error = 0.001 # 0.001 == 0.1%
 
   m, k = BloomHelper.find_m_k(capacity, error)
-  puts("\nStreaming BloomFilter with capacity=#{capacity}, error=#{error}(#{error * 100}%) -> m=#{m}, k=#{k}")
-  bf = StreamingBloomFilter.new(m, k, 0)
+  puts("\nContinuous BloomFilter with capacity=#{capacity}, error=#{error}(#{error * 100}%) -> m=#{m}, k=#{k}")
+  bf = ContinuousBloomFilter.new(m, k, 0)
 
   n = 0
   t = Benchmark.realtime do
@@ -47,7 +47,7 @@ module Bloombroom
       bf.inc_time_slot
     end
   end
-  puts("Streaming BloomFilter #{n} adds + #{n} tests in #{"%.2f" % t}s, operations rate=#{"%.2f" % ((2 * n) / t)}/s")
+  puts("Continuous BloomFilter #{n} adds + #{n} tests in #{"%.2f" % t}s, operations rate=#{"%.2f" % ((2 * n) / t)}/s")
 
 
   puts("\nBloomFilter with capacity=#{capacity}, error=#{error}(#{error * 100}%) -> m=#{m}, k=#{k}")
