@@ -30,7 +30,7 @@ Bloom filters require the use of multiple (k) hash functions for each inserted e
 
 
 ## Installation
-tested in both MRI Ruby 1.9.2, 1.9.3 and JRuby 1.6.7.
+tested in both MRI Ruby 1.9.2, 1.9.3 and JRuby 1.6.7 in 1.9 mode.
 
 ``` sh
 $ gem install bloombroom
@@ -208,6 +208,18 @@ ContinuousBloomFilter m=2875518, k=13 add+include      17.600000   0.060000  17.
 ContinuousBloomFilter m=1437759, k=07 add+include      89711 ops/s
 ContinuousBloomFilter m=2156639, k=10 add+include      70079 ops/s
 ContinuousBloomFilter m=2875518, k=13 add+include      56606 ops/s
+```
+
+## JRuby
+- to run specs use
+
+``` sh
+jruby --1.9 -S rake spec
+```
+- to run benchmarks use 
+
+``` sh
+jruby --1.9 benchmark/some_benchmark.rb
 ```
 
 <a id="reference" />

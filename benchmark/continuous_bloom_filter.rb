@@ -14,7 +14,7 @@ slots = 10.times.map{|i| (KEYS_COUNT / 3).times.map{|i| Digest::SHA1.hexdigest("
 
 if !!(defined?(RUBY_ENGINE) && RUBY_ENGINE == 'jruby')
   puts("warming JVM...")
-  bf = Bloombroom::SteamingBloomFilter.new(Bloombroom::BloomHelper.find_m_k(KEYS_COUNT, 0.001))
+  bf = Bloombroom::ContinuousBloomFilter.new(*Bloombroom::BloomHelper.find_m_k(KEYS_COUNT, 0.001), 0)
   keys.each{|key| bf.add(key)}
 end
 

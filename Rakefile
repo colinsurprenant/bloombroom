@@ -6,7 +6,9 @@ require 'rspec/core/rake_task'
 task :default => :spec
 
 desc "clean, make and run specsrkae"
-task :spec => [:clean, :make] {RSpec::Core::RakeTask.new}
+task :spec => [:clean, :make] do
+  RSpec::Core::RakeTask.new
+end
 
 desc "compile C ext and FFI ext and copy objects into lib"
 task :make do
