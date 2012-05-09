@@ -41,10 +41,13 @@ module Bloombroom
     end
     
     # @param key [String] the key to add in the filter
+    # @return [ContinuousBloomFilter] self
     def add(key)
       current_slot = @lock.synchronize{@current_slot}
       BloomHelper.multi_hash(key, @k).each{|position| @buckets[position % @m] = current_slot}
+      self
     end
+    alias_method :<<, :add
     
     # @param key [String] test for the inclusion if key in the filter
     # @return [Boolean] true if given key is present in the filter. false positive are possible and dependant on the m and k filter parameters.
@@ -63,6 +66,7 @@ module Bloombroom
       end
       !expired
     end
+    alias_method :[], :include?
 
     # start the internal timer thread for managing ttls. must be explicitely called 
     def start_timer

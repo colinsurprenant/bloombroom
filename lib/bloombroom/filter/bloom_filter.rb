@@ -25,15 +25,21 @@ module Bloombroom
       @size = 0
     end
     
+    # @param key [String] the key to add in the filter
+    # @return [Fixnum] the total number of keys in the filter
     def add(key)
       BloomHelper.multi_hash(key, @k).each{|position| @bits.set(position % @m)}
       @size += 1
     end
+    alias_method :<<, :add
     
+    # @param key [String] test for the inclusion if key in the filter
+    # @return [Boolean] true if given key is present in the filter. false positive are possible and dependant on the m and k filter parameters.
     def include?(key)
       BloomHelper.multi_hash(key, @k).each{|position| return false unless @bits.include?(position % @m)}
       true
     end
+    alias_method :[], :include?
     
   end
 end
