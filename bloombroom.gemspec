@@ -15,8 +15,7 @@ Gem::Specification.new do |s|
 
   s.rubyforge_project = "bloombroom"
 
-  s.files         = Dir.glob("{lib/**/*.rb}") + Dir.glob("{ext/**/*.(c|rb)}") + %w(README.md CHANGELOG.md LICENSE.md)
-  s.test_files    = Dir.glob("{spec/**/*.rb}")
+  s.files         = Dir.glob("{lib/**/*.rb}") + Dir.glob("{ext/**/*.rb}") + Dir.glob("{ext/**/*.c}") + %w(README.md CHANGELOG.md LICENSE.md)
   s.require_paths = ["lib"]
   s.extensions    = ["ext/bloombroom/hash/cext/extconf.rb", "ext/bloombroom/hash/ffi/extconf.rb"]
 
