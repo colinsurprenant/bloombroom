@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version     = Bloombroom::VERSION
   s.authors     = ["Colin Surprenant"]
   s.email       = ["colin.surprenant@gmail.com"]
-  s.homepage    = "https://github/colinsurprenant/bloombroom"
+  s.homepage    = "https://github.com/colinsurprenant/bloombroom"
   s.summary     = "bloom filters for bounded and unbounded (streaming) data, FNV hashing and bit fields"
   s.description = "bloombroom has two bloom filter implementations, a standard filter for bounded key space \
                    and a continuous filter for unbounded keys (stream). also contains fast bit field and \
