@@ -5,10 +5,10 @@ require 'rspec/core/rake_task'
 
 task :default => :spec
 
-task :spec do
-  RSpec::Core::RakeTask.new
-end
+desc "clean, make and run specsrkae"
+task :spec => [:clean, :make] {RSpec::Core::RakeTask.new}
 
+desc "compile C ext and FFI ext and copy objects into lib"
 task :make do
   Dir.chdir("ext/bloombroom/hash/cext") do
     ruby "extconf.rb"
