@@ -8,12 +8,14 @@ Gem::Specification.new do |s|
   s.authors     = ["Colin Surprenant"]
   s.email       = ["colin.surprenant@gmail.com"]
   s.homepage    = "https://github/colinsurprenant/bloombroom"
-  s.summary     = "bloom filters and hashing"
-  s.description = "standard bloomfilter and continuous bloom filter for streams"
+  s.summary     = "bloom filters for bounded and unbounded (streaming) data, FNV hashing and bit fields"
+  s.description = "bloombroom has two bloom filter implementations, a standard filter for bounded key space \
+                   and a continuous filter for unbounded keys (stream). also contains fast bit field and \
+                   bit bucket field (multi bits), native/C-ext/FFI FNV hashing and benchmarks for all these."
 
   s.rubyforge_project = "bloombroom"
 
-  s.files         = Dir.glob("{lib/**/*.rb}") + Dir.glob("{ext/**/*.(c|rb)}") + Dir.glob("{benchmarks/**/*.rb}") + %w(README.md CHANGELOG.md LICENSE.md)
+  s.files         = Dir.glob("{lib/**/*.rb}") + Dir.glob("{ext/**/*.(c|rb)}") + %w(README.md CHANGELOG.md LICENSE.md)
   s.test_files    = Dir.glob("{spec/**/*.rb}")
   s.require_paths = ["lib"]
   s.extensions    = ["ext/bloombroom/hash/cext/extconf.rb", "ext/bloombroom/hash/ffi/extconf.rb"]
