@@ -113,6 +113,62 @@ ruby benchmark/continuous_bloom_filter_memory.rb auto 100000000 0.001
 - **1.0%** error rate for **100M** keys: **914mb**
 - **0.1%** error rate for **100M** keys: **1371mb**
 
+## Simulation
+This is an input stream simulation into the ContinuousBloomfilter. First a series to 32 x 20k random unique insertion keys & 20k random unique test keys not part of the insertion set are generated. At each iteration, 20k insertion keys are added, and 20k test keys are checked for inclusion and the internal timer tick is incremented. Since the life of our keys is of 3 timer ticks we chose a filter capacity of 3 x 20k elements. Specific m and k parameter will be computed for an error rate of 0.1% and 3 x 20k capacity. 
+
+We see that as we add more keys, the test keys false positive rate is stable at the required error rate. In the second section, the same sequence is applied to a standard Bloomfilter to show that, obviously, the error rate will increase as more elements are added past the required capacity.
+
+``` sh
+ruby benchmark/continuous_bloom_filter_stats.rb 
+```
+
+```
+generating lots of random keys
+
+Continuous BloomFilter with capacity=60000, error=0.001(0.1%) -> m=862656, k=10
+added 20000 keys, tested 20000 keys, FPs=0/20000 (0.000)%
+added 20000 keys, tested 20000 keys, FPs=1/20000 (0.005)%
+added 20000 keys, tested 20000 keys, FPs=17/20000 (0.085)%
+added 20000 keys, tested 20000 keys, FPs=20/20000 (0.100)%
+added 20000 keys, tested 20000 keys, FPs=23/20000 (0.115)%
+added 20000 keys, tested 20000 keys, FPs=22/20000 (0.110)%
+added 20000 keys, tested 20000 keys, FPs=22/20000 (0.110)%
+added 20000 keys, tested 20000 keys, FPs=17/20000 (0.085)%
+added 20000 keys, tested 20000 keys, FPs=18/20000 (0.090)%
+added 20000 keys, tested 20000 keys, FPs=21/20000 (0.105)%
+added 20000 keys, tested 20000 keys, FPs=11/20000 (0.055)%
+added 20000 keys, tested 20000 keys, FPs=17/20000 (0.085)%
+added 20000 keys, tested 20000 keys, FPs=18/20000 (0.090)%
+added 20000 keys, tested 20000 keys, FPs=19/20000 (0.095)%
+added 20000 keys, tested 20000 keys, FPs=21/20000 (0.105)%
+added 20000 keys, tested 20000 keys, FPs=20/20000 (0.100)%
+added 20000 keys, tested 20000 keys, FPs=24/20000 (0.120)%
+added 20000 keys, tested 20000 keys, FPs=21/20000 (0.105)%
+added 20000 keys, tested 20000 keys, FPs=22/20000 (0.110)%
+added 20000 keys, tested 20000 keys, FPs=24/20000 (0.120)%
+added 20000 keys, tested 20000 keys, FPs=15/20000 (0.075)%
+added 20000 keys, tested 20000 keys, FPs=16/20000 (0.080)%
+added 20000 keys, tested 20000 keys, FPs=16/20000 (0.080)%
+added 20000 keys, tested 20000 keys, FPs=17/20000 (0.085)%
+added 20000 keys, tested 20000 keys, FPs=22/20000 (0.110)%
+added 20000 keys, tested 20000 keys, FPs=21/20000 (0.105)%
+added 20000 keys, tested 20000 keys, FPs=24/20000 (0.120)%
+added 20000 keys, tested 20000 keys, FPs=16/20000 (0.080)%
+added 20000 keys, tested 20000 keys, FPs=17/20000 (0.085)%
+added 20000 keys, tested 20000 keys, FPs=24/20000 (0.120)%
+added 20000 keys, tested 20000 keys, FPs=17/20000 (0.085)%
+added 20000 keys, tested 20000 keys, FPs=19/20000 (0.095)%
+Continuous BloomFilter 640000 adds + 640000 tests in 16.95s, 75537 ops/s
+
+BloomFilter with capacity=60000, error=0.001(0.1%) -> m=862656, k=10
+added 20000 keys, tested 20000 keys, FPs=0/20000 (0.000)%
+added 20000 keys, tested 20000 keys, FPs=1/20000 (0.005)%
+added 20000 keys, tested 20000 keys, FPs=17/20000 (0.085)%
+added 20000 keys, tested 20000 keys, FPs=131/20000 (0.655)%
+added 20000 keys, tested 20000 keys, FPs=453/20000 (2.265)%
+added 20000 keys, tested 20000 keys, FPs=1162/20000 (5.810)%
+BloomFilter 120000 adds + 120000 tests in 1.64s, 146008 ops/s
+```
 
 ## Benchmarks
 All benchmarks have been run on a MacbookPro with a 2.66GHz i7 with 8GB RAM on OSX 10.6.8 with MRI Ruby 1.9.3p194
@@ -211,6 +267,8 @@ ContinuousBloomFilter m=2875518, k=13 add+include      56606 ops/s
 ```
 
 ## JRuby
+This has only been tested in Ruby **1.9**. JRuby 1.9 mode has to be enabled to run tests and benchmarks. 
+
 - to run specs use
 
 ``` sh
@@ -231,6 +289,12 @@ jruby --1.9 benchmark/some_benchmark.rb
 - [The maths to compute optimal m and k ](http://www.siaris.net/index.cgi/Programming/LanguageBits/Ruby/BloomFilter.rdoc)
 - [Producing n hash functions by hashing only once](http://willwhim.wordpress.com/2011/09/03/producing-n-hash-functions-by-hashing-only-once/)
 - [Less Hashing, Same Performance: Building a Better Bloom Filter](http://citeseer.ist.psu.edu/viewdoc/download?doi=10.1.1.152.579&rep=rep1&type=pdf)
+
+## Credits
+- [Ilya Grigorik](http://www.igvita.com/) for his overall impressive contributions and in particular for his inspiration with the [Time-based Bloom filters](http://www.igvita.com/2010/01/06/flow-analysis-time-based-bloom-filters/).
+- Authors of the [Stable Bloom filters research paper](http://webdocs.cs.ualberta.ca/~drafiei/papers/DupDet06Sigmod.pdf) which also provided inspiration.
+- [Robey Pointer](https://github.com/robey) for his [Ruby FNV C extension implementation](https://github.com/robey/rbfnv).
+- [Peter Cooper](http://www.petercooper.co.uk/) for inspiration with [his BitField class](http://dzone.com/snippets/bitfield-fastish-pure-ruby-bit).
 
 ## Author
 Colin Surprenant, [@colinsurprenant][twitter], [http://github.com/colinsurprenant][github], colin.surprenant@needium.com, colin.surprenant@gmail.com
