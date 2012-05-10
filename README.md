@@ -291,7 +291,7 @@ jruby --1.9 benchmark/some_benchmark.rb
 - [Less Hashing, Same Performance: Building a Better Bloom Filter](http://citeseer.ist.psu.edu/viewdoc/download?doi=10.1.1.152.579&rep=rep1&type=pdf)
 
 ## Credits
-- [Ilya Grigorik](http://www.igvita.com/) for his overall impressive contributions and in particular for his inspiration with the [Time-based Bloom filters](http://www.igvita.com/2010/01/06/flow-analysis-time-based-bloom-filters/).
+- [Ilya Grigorik](http://www.igvita.com/) for his overall impressive contributions and in particular for inspiration with the [Time-based Bloom filters](http://www.igvita.com/2010/01/06/flow-analysis-time-based-bloom-filters/).
 - Authors of the [Stable Bloom filters research paper](http://webdocs.cs.ualberta.ca/~drafiei/papers/DupDet06Sigmod.pdf) which also provided inspiration.
 - [Robey Pointer](https://github.com/robey) for his [Ruby FNV C extension implementation](https://github.com/robey/rbfnv).
 - [Peter Cooper](http://www.petercooper.co.uk/) for inspiration with [his BitField class](http://dzone.com/snippets/bitfield-fastish-pure-ruby-bit).
