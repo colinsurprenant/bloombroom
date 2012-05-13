@@ -21,7 +21,7 @@ The internal timer resolution is set to half of the required TTL (resolution div
 ring buffer using the current timer tick modulo 15. The timer ticks will be time slot=1, 2, ... 15, 1, 2 and so on. The total 
 time of our internal clock will thus be 15 * (TTL / 2). We keep track of TTL by writing the current time slot 
 in the key k buckets when inserted in the filter. For a key lookup if the interval betweem the current time slot and any of the k buckets value 
-is greater than 2 (resolution divisor) we know this key is expired. See [continuous_bloom_filter.rb](https://github.com/colinsurprenant/bloombroom/blob/master/lib/bloombroom/filter/continuous_bloom_filter.rb)
+is greater than 2 (resolution divisor) we know this key is expired. See my [Continuous Bloom filter](http://colinsurprenant.com/blog/2012/05/12/continuous-bloom-filter/) blog post about this.
 
 This means that an element is garanteed to not be expired before the given TTL but in the worst case could survive until 3 * (TTL / 2). 
 
@@ -280,7 +280,7 @@ jruby --1.9 -S rake spec
 jruby --1.9 benchmark/some_benchmark.rb
 ```
 
-<a id="reference" />
+<a id="references" />
 ## References ##
 - [Bloom filter on wikipedia](http://en.wikipedia.org/wiki/Bloom_filter)
 - [Scalable Datasets: Bloom Filters in Ruby](http://www.igvita.com/2008/12/27/scalable-datasets-bloom-filters-in-ruby/)
