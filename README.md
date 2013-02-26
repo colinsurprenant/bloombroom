@@ -28,7 +28,6 @@ This means that an element is garanteed to not be expired before the given TTL b
 ### Hashing
 Bloom filters require the use of multiple (k) hash functions for each inserted element. We actually simulate multiple hash functions by having just two hash functions which are actually the upper and lower 32 bits of our FFI FNV1a 64 bits hash function. Double hashing with one hash function. Very very fast. See [bloom_helper.rb](https://github.com/colinsurprenant/bloombroom/blob/master/lib/bloombroom/filter/bloom_helper.rb) and the [references](#references) section for more info on this technique.
 
-
 ## Installation
 tested in both MRI Ruby 1.9.2, 1.9.3 and JRuby 1.6.7 in 1.9 mode.
 
