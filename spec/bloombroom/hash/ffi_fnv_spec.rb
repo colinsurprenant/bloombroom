@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'bloombroom/hash/ffi_fnv'
+# require 'bloombroom/hash/ffi_fnv'
 require 'bloombroom/hash/test_vectors'
 
 describe Bloombroom::FNVFFI do

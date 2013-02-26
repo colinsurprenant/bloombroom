@@ -1,6 +1,6 @@
 require 'spec_helper'
-require 'bloombroom/hash/fnv_a'
-require 'bloombroom/hash/test_vectors'
+# require 'bloombroom/hash/fnv_a'
+# require 'bloombroom/hash/test_vectors'
 
 describe Bloombroom::FNVA do
 

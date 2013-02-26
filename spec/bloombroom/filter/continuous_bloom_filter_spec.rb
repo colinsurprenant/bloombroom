@@ -1,6 +1,6 @@
 require 'spec_helper'
-require 'bloombroom/filter/continuous_bloom_filter'
-require 'bloombroom/filter/bloom_helper'
+# require 'bloombroom/filter/continuous_bloom_filter'
+# require 'bloombroom/filter/bloom_helper'
 
 describe Bloombroom::ContinuousBloomFilter do
 

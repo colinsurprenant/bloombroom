@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'bloombroom/bits/bit_bucket_field'
+# require 'bloombroom/bits/bit_bucket_field'
 
 describe Bloombroom::BitBucketField do
 

@@ -1,0 +1,5 @@
+require 'ffi-compiler/compile_task'
+
+FFI::Compiler::CompileTask.new('ffi_fnv') do |c|
+  # nothing yet
+end

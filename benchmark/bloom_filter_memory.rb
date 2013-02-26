@@ -1,8 +1,9 @@
-$:.unshift File.dirname(__FILE__) + '/../lib/'
-$:.unshift File.dirname(__FILE__) + '/../'
+# $:.unshift File.dirname(__FILE__) + '/../lib/'
+# $:.unshift File.dirname(__FILE__) + '/../'
 
-require 'benchmark/memory'
-require "bloombroom"
+require 'bundler/setup'
+require 'bloombroom'
+# require 'benchmark/memory'
 
 DEFAULT_M = 10000000
 DEFAULT_K = 1

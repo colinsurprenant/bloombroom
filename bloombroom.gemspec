@@ -13,13 +13,19 @@ Gem::Specification.new do |s|
                    and a continuous filter for unbounded keys (stream). also contains fast bit field and \
                    bit bucket field (multi bits), native/C-ext/FFI FNV hashing and benchmarks for all these."
 
-  s.rubyforge_project = "bloombroom"
-
+  # s.files         = `git ls-files`.split($/)
   s.files         = Dir.glob("{lib/**/*.rb}") + Dir.glob("{ext/**/*.rb}") + Dir.glob("{ext/**/*.c}") + %w(README.md CHANGELOG.md LICENSE.md)
+  s.executables   = s.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
+  s.test_files    = s.files.grep(%r{^(test|spec|features)/})
   s.require_paths = ["lib"]
-  s.extensions    = ["ext/bloombroom/hash/cext/extconf.rb", "ext/bloombroom/hash/ffi/extconf.rb"]
+  # s.extensions    = ["ffi/bloombroom/Rakefile", "ext/bloombroom/extconf.rb"]
+  s.extensions    << "ffi/bloombroom/Rakefile"
+  s.extensions    << "ext/bloombroom/extconf.rb" unless RUBY_PLATFORM =~ /java/
 
-  s.add_development_dependency "rspec", ["~> 2.8.0"]
+  s.has_rdoc = false
+  s.license = 'Apache 2.0'
   
-  s.add_runtime_dependency "ffi"
+  s.add_dependency "ffi", ">= 1.0.0"
+  s.add_dependency "ffi-compiler"
+  s.add_development_dependency "rspec", ">= 2.8.0"
 end

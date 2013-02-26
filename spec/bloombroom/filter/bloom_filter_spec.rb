@@ -1,6 +1,5 @@
 require 'spec_helper'
-require 'bloombroom/filter/bloom_filter'
-require 'bloombroom/filter/bloom_helper'
+# require 'bloombroom'
 
 describe Bloombroom::BloomFilter do
 
