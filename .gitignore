@@ -5,3 +5,6 @@
 Makefile
 Gemfile.lock
 pkg/*
+.ruby-version
+tmp/
+vendor/
