@@ -6,3 +6,6 @@
 - only compile c-ext on non-JRuby platforms
 - test on JRuby 1.7.3 and MRI Ruby 2.0.0
 - FFI perfromance improvements
+
+# 1.1.1, 02-26-2013
+- gemspec fix for c-ext compiling
