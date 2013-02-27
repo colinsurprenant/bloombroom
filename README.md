@@ -1,10 +1,10 @@
-# Bloombroom v1.0.0
+# Bloombroom v1.1.0
 
 - Standard **Bloomfilter** class for bounded key space
 - **ContinuousBloomfilter** class for unbounded keys (**stream**)
-- Bitfield class
-- BitBucketField class (multi bits)
-- native, C & FFI extensions FNV hash classes
+- Bitfield class (single bit field)
+- BitBucketField class (multiple bit fields)
+- pure, C-ext & FFI extensions FNV hash classes
 
 The Bloom filter is a space-efficient probabilistic data structure that is used to test whether an element is a member of a set. False positives are possible, but false negatives are not. See [wikipedia](http://en.wikipedia.org/wiki/Bloom_filter).
 
@@ -29,7 +29,7 @@ This means that an element is garanteed to not be expired before the given TTL b
 Bloom filters require the use of multiple (k) hash functions for each inserted element. We actually simulate multiple hash functions by having just two hash functions which are actually the upper and lower 32 bits of our FFI FNV1a 64 bits hash function. Double hashing with one hash function. Very very fast. See [bloom_helper.rb](https://github.com/colinsurprenant/bloombroom/blob/master/lib/bloombroom/filter/bloom_helper.rb) and the [references](#references) section for more info on this technique.
 
 ## Installation
-tested in both MRI Ruby 1.9.2, 1.9.3 and JRuby 1.6.7 in 1.9 mode.
+tested in both MRI Ruby 1.9.2, 1.9.3, 2.0 and JRuby 1.7.3.
 
 ``` sh
 $ gem install bloombroom
@@ -266,7 +266,9 @@ ContinuousBloomFilter m=2875518, k=13 add+include      56606 ops/s
 ```
 
 ## JRuby
-This has only been tested in Ruby **1.9**. JRuby 1.9 mode has to be enabled to run tests and benchmarks. 
+This has only been tested in Ruby **1.9** mode. JRuby 1.9 mode has to be enabled to run tests and benchmarks. 
+
+Note that this is not necessary anymore with JRuby 1.7 which is in 1.9 mode by default.
 
 - to run specs use
 
@@ -290,16 +292,14 @@ jruby --1.9 benchmark/some_benchmark.rb
 - [Less Hashing, Same Performance: Building a Better Bloom Filter](http://citeseer.ist.psu.edu/viewdoc/download?doi=10.1.1.152.579&rep=rep1&type=pdf)
 
 ## Credits
-- [Ilya Grigorik](http://www.igvita.com/) for his overall impressive contributions and in particular for inspiration with the [Time-based Bloom filters](http://www.igvita.com/2010/01/06/flow-analysis-time-based-bloom-filters/).
+- [Ilya Grigorik](http://www.igvita.com/) for his inspiration with the [Time-based Bloom filters](http://www.igvita.com/2010/01/06/flow-analysis-time-based-bloom-filters/).
 - Authors of the [Stable Bloom filters research paper](http://webdocs.cs.ualberta.ca/~drafiei/papers/DupDet06Sigmod.pdf) which also provided inspiration.
 - [Robey Pointer](https://github.com/robey) for his [Ruby FNV C extension implementation](https://github.com/robey/rbfnv).
 - [Peter Cooper](http://www.petercooper.co.uk/) for inspiration with [his BitField class](http://dzone.com/snippets/bitfield-fastish-pure-ruby-bit).
 
 ## Author
-Colin Surprenant, [@colinsurprenant][twitter], [http://github.com/colinsurprenant][github], colin.surprenant@needium.com, colin.surprenant@gmail.com
+Colin Surprenant, [@colinsurprenant](http://twitter.com/colinsurprenant), [http://github.com/colinsurprenant](http://github.com/colinsurprenant), colin.surprenant@gmail.com
 
 ## License
 Bloombroom is distributed under the Apache License, Version 2.0. 
 
-[twitter]: http://twitter.com/colinsurprenant
-[github]: http://github.com/colinsurprenant
