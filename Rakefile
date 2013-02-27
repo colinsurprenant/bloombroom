@@ -8,7 +8,7 @@ require 'ffi-compiler/compile_task'
 
 task :default => [:clean, :compile_ffi] + ((RUBY_PLATFORM =~ /java/) ? [] : [:compile_cext]) + [:spec]
 
-desc "clean, make and run specsrkae"
+desc "clean, make and run specs"
 task :spec  do
   RSpec::Core::RakeTask.new
 end
