@@ -13,12 +13,11 @@ Gem::Specification.new do |s|
                    and a continuous filter for unbounded keys (stream). also contains fast bit field and \
                    bit bucket field (multi bits), native/C-ext/FFI FNV hashing and benchmarks for all these."
 
-  # s.files         = `git ls-files`.split($/)
-  s.files         = Dir.glob("{lib/**/*.rb}") + Dir.glob("{ext/**/*.rb}") + Dir.glob("{ext/**/*.c}") + %w(README.md CHANGELOG.md LICENSE.md)
+  s.files         = `git ls-files`.split($/)
+  # s.files         = Dir.glob("{lib/**/*.rb}") + Dir.glob("{ext/**/*.rb}") + Dir.glob("{ext/**/*.c}") + %w(README.md CHANGELOG.md LICENSE.md)
   s.executables   = s.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   s.test_files    = s.files.grep(%r{^(test|spec|features)/})
   s.require_paths = ["lib"]
-  # s.extensions    = ["ffi/bloombroom/Rakefile", "ext/bloombroom/extconf.rb"]
   s.extensions    << "ffi/bloombroom/Rakefile"
   s.extensions    << "ext/bloombroom/extconf.rb" unless RUBY_PLATFORM =~ /java/
 
