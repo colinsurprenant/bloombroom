@@ -19,7 +19,7 @@ task :compile_cext do
     ruby "extconf.rb"
     sh "make"
   end
-  cp "ext/bloombroom/" + (FFI::Platform.mac? ? "cext_fnv.bundle" : FFI.map_library_name("cext_fnv")), "lib/bloombroom/hash"
+  cp "ext/bloombroom/" + (FFI::Platform.mac? ? "cext_fnv.bundle" : "cext_fnv." + FFI::Platform::LIBSUFFIX), "lib/bloombroom/hash"
 end
 
 desc "FFI compiler"
