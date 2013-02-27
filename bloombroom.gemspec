@@ -23,7 +23,8 @@ Gem::Specification.new do |s|
   # else
   #   s.extensions    = ["ffi/bloombroom/Rakefile", "ext/bloombroom/extconf.rb"]
   # end
-  s.extensions    = ["ffi/bloombroom/Rakefile", "ext/bloombroom/extconf.rb"]
+  # s.extensions    = ["ffi/bloombroom/Rakefile", "ext/bloombroom/extconf.rb"]
+  s.extensions    = ["ext/bloombroom/extconf.rb"]
 
   s.has_rdoc = false
   s.license = 'Apache 2.0'
