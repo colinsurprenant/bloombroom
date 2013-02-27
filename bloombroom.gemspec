@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   if ::RUBY_PLATFORM =~ /java/
     s.extensions    = ["ffi/bloombroom/hash/Rakefile"]
   else
-    s.extensions    = ["ffi/bloombroom/hash/Rakefile", "ext/bloombroom/hash/extconf.rb"]
+    s.extensions    = ["ext/bloombroom/hash/extconf.rb", "ffi/bloombroom/hash/Rakefile"]
   end
 
   s.has_rdoc = false
