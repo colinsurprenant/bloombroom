@@ -115,15 +115,15 @@ Bloombroom::FNVFFI.fnv1a_64("test")  # => 18007334074686647077
 ### Bit Field
 
 ``` ruby
-bf = Bloombroom::BitField.new(10)
+bf = Bloombroom::BitField.new(7)
 
-bf.size            # => 10
+bf.size            # => 7
 
 bf[1] = 1          # set using array notation
 bf.set(5)          # set using method
 bf.total_set       # => 2
 
-bf.to_s            # => "0100010000"
+bf.to_s            # => "0100010"
 
 bf.include?(5)     # => true
 bf.zero?(5)        # => false
@@ -132,8 +132,7 @@ bf[1] = 0          # unset using array notation
 bf.unset(5)        # unset using method
 
 bf[2] = 1
-bf.each{|bit| putc(bit.zero? ? 'A' : 'B')}   # => AABAAAAAAA
-bf.map{|bit| bit.zero? ? 'A' : 'B'}          # => ["A", "A", "B", "A", "A", "A", "A", "A", "A", "A"]
+bf.map{|bit| bit.zero?}  # => [true, true, false, true, true, true, true]
 ```
 
 ### Bit Bucket Field
