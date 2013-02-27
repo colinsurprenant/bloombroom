@@ -18,9 +18,11 @@ Gem::Specification.new do |s|
   s.executables   = s.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   s.test_files    = s.files.grep(%r{^(test|spec|features)/})
   s.require_paths = ["lib"]
-  s.extensions    = []
-  s.extensions    << "ffi/bloombroom/Rakefile"
-  s.extensions    << "ext/bloombroom/extconf.rb" unless RUBY_PLATFORM =~ /java/
+  if ::RUBY_PLATFORM =~ /java/
+    s.extensions    = ["ffi/bloombroom/Rakefile"]
+  else
+    s.extensions    = ["ffi/bloombroom/Rakefile", "ext/bloombroom/extconf.rb"]
+  end
 
   s.has_rdoc = false
   s.license = 'Apache 2.0'

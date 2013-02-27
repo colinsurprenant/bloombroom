@@ -1,4 +1,4 @@
-# Bloombroom v1.1.1
+# Bloombroom v1.1.2
 
 [![build status](https://secure.travis-ci.org/colinsurprenant/bloombroom.png)](http://travis-ci.org/colinsurprenant/bloombroom)
 
