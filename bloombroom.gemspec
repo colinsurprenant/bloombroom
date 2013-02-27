@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.executables   = s.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   s.test_files    = s.files.grep(%r{^(test|spec|features)/})
   s.require_paths = ["lib"]
-  s.extensions    = ["ext/bloombroom/hash/extconf.rb", "ffi/bloombroom/hash/Rakefile"]
+  s.extensions    = ["ffi/bloombroom/hash/Rakefile"]
 
   s.has_rdoc = false
   s.license = 'Apache 2.0'
