@@ -4,16 +4,18 @@
 
 - Standard **Bloomfilter** class for bounded key space
 - **ContinuousBloomfilter** class for unbounded keys (**stream**)
-- Bitfield class (single bit field)
-- BitBucketField class (multiple bit fields)
-- Fast FNV hashing using C implementation with FFI bindings.
+- **Bitfield** class for compact & fast manipulation of bits field of arbitrary lenght 
+- **BitBucketField** class for compact & fast manipulation of series of bit "buckets" of arbitrary size
+- Fast **FNV hashing** using C implementation with FFI bindings.
 
-The Bloom filter is a space-efficient probabilistic data structure that is used to test whether an element is a member of a set. False positives are possible, but false negatives are not. See [wikipedia](http://en.wikipedia.org/wiki/Bloom_filter).
+The [Bloom filter](http://en.wikipedia.org/wiki/Bloom_filter) is a space-efficient probabilistic data structure that is used to test whether an element is a member of a set. False positives are possible, but false negatives are not.
 
 Bloom filters are normally used in the context of a bounded set since the filter size must be known in advance. for a given filter capacity, its total bit size will affect the false positive error rate. The total number of bits required for a given filter can be computed from the required filter capacity and target error rate. See the [references](#references) section for more info.
 
+This implementation uses [FNV hashing](https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function). FNV is designed to be fast to compute.
+
 ### ContinuousBloomfilter
-The **ContinuousBloomfilter** provides a bloom filter implementation which support unbounded stream of elements. Elements are expired after a chosen TTL. At initialization the filter capacity must be estimated for the numbers of elements expected over the given TTL period. 
+The [ContinuousBloomfilter](http://colinsurprenant.com/blog/2012/05/12/continuous-bloom-filter/) provides a bloom filter implementation which support unbounded stream of elements. Elements are expired after a chosen TTL. At initialization the filter capacity must be estimated for the numbers of elements expected over the given TTL period. 
 
 For example to do dedupping on a stream with a rate of **5000 items/sec** over a period of **60 minutes** would require a filter capacity of **18M** elements. For a required error rate of **0.1%** the filter would need **246mb** of memory (which include all Ruby objects overhead).
 
@@ -28,16 +30,28 @@ is greater than 2 (resolution divisor) we know this key is expired. See my [Cont
 This means that an element is garanteed to not be expired before the given TTL but in the worst case could survive until 3 * (TTL / 2). 
 
 ### Hashing
-Bloom filters require the use of multiple (k) hash functions for each inserted element. We actually simulate multiple hash functions by having just two hash functions which are actually the upper and lower 32 bits of our FFI FNV1a 64 bits hash function. Double hashing with one hash function. Very very fast. See [bloom_helper.rb](https://github.com/colinsurprenant/bloombroom/blob/master/lib/bloombroom/filter/bloom_helper.rb) and the [references](#references) section for more info on this technique.
+Bloom filters require the use of multiple (k) hash functions for each inserted element. We actually simulate multiple hash functions by having just two hash functions which are actually the upper and lower 32 bits of our fast FFI FNV1a 64 bits hash function. Double hashing with one hash function. Very very fast. See [bloom_helper.rb](https://github.com/colinsurprenant/bloombroom/blob/master/lib/bloombroom/filter/bloom_helper.rb) and the [references](#references) section for more info on this technique.
 
 ## Installation
-tested in both MRI Ruby 1.9.2, 1.9.3, 2.0 and JRuby 1.7.3.
 
-``` sh
+Tested on **OSX 10.8.2** and **Linux 12.10** with
+- MRI Ruby 1.9.2, 1.9.3, 2.0.0
+- JRuby 1.7.2, 1.7.3
+
+Add this line to your application's Gemfile:
+```ruby
+gem 'bloombroom'
+```
+And then execute:
+```sh
+$ bundle
+```
+Or install it yourself as:
+```sh
 $ gem install bloombroom
 ```
 
-## Examples
+## Usage
 
 ### Standard Bloom filter
 ``` ruby
@@ -87,6 +101,61 @@ sleep(3)
 bf["key1"] # => false
 bf["key2"] # => false
 bf["key3"] # => false
+```
+
+### FNV Hashing
+
+``` ruby
+Bloombroom::FNVFFI.fnv1_32("test")   # => 3157003241
+Bloombroom::FNVFFI.fnv1a_32("test")  # => 2949673445
+Bloombroom::FNVFFI.fnv1_64("test")   # => 10090666253179731817
+Bloombroom::FNVFFI.fnv1a_64("test")  # => 18007334074686647077
+```
+
+### Bit Field
+
+``` ruby
+bf = Bloombroom::BitField.new(10)
+
+bf.size            # => 10
+
+bf[1] = 1          # set using array notation
+bf.set(5)          # set using method
+bf.total_set       # => 2
+
+bf.to_s            # => "0100010000"
+
+bf.include?(5)     # => true
+bf.zero?(5)        # => false
+
+bf[1] = 0          # unset using array notation
+bf.unset(5)        # unset using method
+
+bf[2] = 1
+bf.each{|bit| putc(bit.zero? ? 'A' : 'B')}   # => AABAAAAAAA
+bf.map{|bit| bit.zero? ? 'A' : 'B'}          # => ["A", "A", "B", "A", "A", "A", "A", "A", "A", "A"]
+```
+
+### Bit Bucket Field
+
+``` ruby
+bf = Bloombroom::BitBucketField.new(4, 3)   # 3 x buckets of 4 bits
+
+bf[0] = 2
+bf[0]         # => 2
+bf.to_s       # => "0010 0000 0000"
+bf.to_s(10)   # => "2 0 0"
+
+bf.set(1, 15)
+bf.get(1)     # => 15
+bf.to_s       # => "0010 1111 0000"
+bf.to_s(10)   # =>  "2 15 0"
+
+bf.zero?(1)   # => false
+
+bf.total_set  # => 2
+
+bf.map{|bucket| bucket.zero?}  # => [false, false, true]
 ```
 
 ## Memory footprint
@@ -232,10 +301,8 @@ ContinuousBloomFilter m=2156639, k=10 add+include      70079 ops/s
 ContinuousBloomFilter m=2875518, k=13 add+include      56606 ops/s
 ```
 
-## JRuby
-This has only been tested in Ruby **1.9** mode. JRuby 1.9 mode has to be enabled to run tests and benchmarks. 
-
-Note that this is not necessary anymore with JRuby 1.7 which is in 1.9 mode by default.
+## JRuby < 1.7
+This has only been tested in Ruby **1.9** mode. JRuby 1.9 mode has to be enabled to run tests and benchmarks. Note that this is not necessary  with JRuby >= 1.7 which is in 1.9 mode by default.
 
 - to run specs use
 
