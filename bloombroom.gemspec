@@ -8,13 +8,12 @@ Gem::Specification.new do |s|
   s.authors     = ["Colin Surprenant"]
   s.email       = ["colin.surprenant@gmail.com"]
   s.homepage    = "https://github.com/colinsurprenant/bloombroom"
-  s.summary     = "bloom filters for bounded and unbounded (streaming) data, FNV hashing and bit fields"
+  s.summary     = "bloom filters for bounded and unbounded (streaming) data, fast C/FFI FNV hashing and bit fields"
   s.description = "bloombroom has two bloom filter implementations, a standard filter for bounded key space \
-                   and a continuous filter for unbounded keys (stream). also contains fast bit field and \
-                   bit bucket field (multi bits), native/C-ext/FFI FNV hashing and benchmarks for all these."
+                   and a continuous filter for unbounded keys (stream). also contains fast C/FFI FNV hashing and fast bit field and \
+                   bit bucket field (multi bits)."
 
   s.files         = `git ls-files`.split($/)
-  # s.files         = Dir.glob("{lib/**/*.rb}") + Dir.glob("{ext/**/*.rb}") + Dir.glob("{ext/**/*.c}") + %w(README.md CHANGELOG.md LICENSE.md)
   s.executables   = s.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   s.test_files    = s.files.grep(%r{^(test|spec|features)/})
   s.require_paths = ["lib"]
