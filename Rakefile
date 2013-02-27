@@ -15,16 +15,16 @@ end
 
 desc "C ext compiler"
 task :compile_cext do
-  Dir.chdir("ext/bloombroom/") do
+  Dir.chdir("ext/bloombroom/hash/") do
     ruby "extconf.rb"
     sh "make"
   end
-  cp "ext/bloombroom/" + (FFI::Platform.mac? ? "cext_fnv.bundle" : "cext_fnv." + FFI::Platform::LIBSUFFIX), "lib/bloombroom/hash"
+  cp "ext/bloombroom/hash/" + (FFI::Platform.mac? ? "cext_fnv.bundle" : "cext_fnv." + FFI::Platform::LIBSUFFIX), "lib/bloombroom/hash"
 end
 
 desc "FFI compiler"
 namespace "ffi-compiler" do
-  FFI::Compiler::CompileTask.new('ffi/bloombroom/ffi_fnv')
+  FFI::Compiler::CompileTask.new('ffi/bloombroom/hash/ffi_fnv')
 end
 task :compile_ffi => ["ffi-compiler:default"]
 
