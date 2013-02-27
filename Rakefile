@@ -3,6 +3,7 @@ require 'rake'
 require 'rake/clean'
 require 'bundler/gem_tasks'
 require 'rspec/core/rake_task'
+require 'ffi'
 require 'ffi-compiler/compile_task'
 
 task :default => [:clean, :compile_ffi] + ((RUBY_PLATFORM =~ /java/) ? [] : [:compile_cext]) + [:spec]
@@ -18,7 +19,7 @@ task :compile_cext do
     ruby "extconf.rb"
     sh "make"
   end
-  cp "ext/bloombroom/cext_fnv.bundle", "lib/bloombroom/hash"
+  cp "ext/bloombroom/" + (FFI::Platform.mac? ? "cext_fnv.bundle" : FFI.map_library_name("cext_fnv")), "lib/bloombroom/hash"
 end
 
 desc "FFI compiler"
