@@ -17,7 +17,7 @@ desc "C ext compiler"
 task :compile_cext do
   Dir.chdir("ext/bloombroom/hash/") do
     ruby "extconf.rb"
-    sh "make"
+    sh "make install"
   end
   cp "ext/bloombroom/hash/" + (FFI::Platform.mac? ? "cext_fnv.bundle" : "cext_fnv." + FFI::Platform::LIBSUFFIX), "lib/bloombroom/hash"
 end

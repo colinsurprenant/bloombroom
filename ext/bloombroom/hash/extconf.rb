@@ -1,3 +1,3 @@
 require 'mkmf'
 
-create_makefile('cext_fnv')
+create_makefile('bloombroom/hash/cext_fnv')
