@@ -1,5 +1,7 @@
 # Bloombroom v1.1.0
 
+[![build status](https://secure.travis-ci.org/colinsurprenant/bloombroom.png)](http://travis-ci.org/colinsurprenant/bloombroom)
+
 - Standard **Bloomfilter** class for bounded key space
 - **ContinuousBloomfilter** class for unbounded keys (**stream**)
 - Bitfield class (single bit field)
