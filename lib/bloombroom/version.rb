@@ -1,3 +1,3 @@
 module Bloombroom
-  VERSION = "1.1.3"
+  VERSION = "1.2.0.beta1"
 end

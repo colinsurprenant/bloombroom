@@ -8,3 +8,5 @@ pkg/*
 .ruby-version
 tmp/
 vendor/
+.vagrant
+Vagrantfile

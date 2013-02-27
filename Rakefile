@@ -6,20 +6,11 @@ require 'rspec/core/rake_task'
 require 'ffi'
 require 'ffi-compiler/compile_task'
 
-task :default => [:clean, :compile_ffi] + ((RUBY_PLATFORM =~ /java/) ? [] : [:compile_cext]) + [:spec]
+task :default => [:clean, :compile_ffi, :spec]
 
 desc "clean, make and run specs"
 task :spec  do
   RSpec::Core::RakeTask.new
-end
-
-desc "C ext compiler"
-task :compile_cext do
-  Dir.chdir("ext/bloombroom/hash/") do
-    ruby "extconf.rb"
-    sh "make install"
-  end
-  cp "ext/bloombroom/hash/" + (FFI::Platform.mac? ? "cext_fnv.bundle" : "cext_fnv." + FFI::Platform::LIBSUFFIX), "lib/bloombroom/hash"
 end
 
 desc "FFI compiler"
@@ -28,7 +19,5 @@ namespace "ffi-compiler" do
 end
 task :compile_ffi => ["ffi-compiler:default"]
 
-CLEAN.include('ext/**/*{.o,.log,.so,.bundle}')
 CLEAN.include('ffi/**/*{.o,.log,.so,.bundle}')
 CLEAN.include('lib/**/*{.o,.log,.so,.bundle}')
-CLEAN.include('ext/**/Makefile')

@@ -1,4 +1,4 @@
-# Bloombroom v1.1.3
+# Bloombroom v1.2.0
 
 [![build status](https://secure.travis-ci.org/colinsurprenant/bloombroom.png)](http://travis-ci.org/colinsurprenant/bloombroom)
 
@@ -6,7 +6,7 @@
 - **ContinuousBloomfilter** class for unbounded keys (**stream**)
 - Bitfield class (single bit field)
 - BitBucketField class (multiple bit fields)
-- pure, C-ext & FFI extensions FNV hash classes
+- Fast FNV hashing using C implementation with FFI bindings.
 
 The Bloom filter is a space-efficient probabilistic data structure that is used to test whether an element is a member of a set. False positives are possible, but false negatives are not. See [wikipedia](http://en.wikipedia.org/wiki/Bloom_filter).
 
@@ -174,41 +174,7 @@ BloomFilter 120000 adds + 120000 tests in 1.64s, 146008 ops/s
 ## Benchmarks
 All benchmarks have been run on a MacbookPro with a 2.66GHz i7 with 8GB RAM on OSX 10.6.8 with MRI Ruby 1.9.3p194
 
-### Hashing
-The Hashing benchmark compares the performance of SHA1, MD5, two native Ruby FNV (A & B) implementations, a C implementation as a C extension and FFI extension for 32 and 64 bits hashes. 
-
-``` sh
-ruby benchmark/fnv.rb
-```
-
-```
-benchmarking for 1000000 iterations
-                         user     system      total        real
-MD5:                 1.900000   0.010000   1.910000 (  1.912995)
-SHA-1:               2.110000   0.000000   2.110000 (  2.109739)
-native FNV A 32:    32.470000   0.110000  32.580000 ( 32.596759)
-native FNV A 64:    38.330000   0.570000  38.900000 ( 38.923384)
-native FNV B 32:     4.870000   0.020000   4.890000 (  4.882862)
-native FNV B 64:    37.700000   0.110000  37.810000 ( 37.842873)
-ffi FNV 32:          0.760000   0.010000   0.770000 (  0.754941)
-ffi FNV 64:          0.890000   0.000000   0.890000 (  0.901954)
-c-ext FNV 32:        0.310000   0.000000   0.310000 (  0.307131)
-c-ext FNV 64:        0.480000   0.000000   0.480000 (  0.485310)
-
-MD5:                   522740 ops/s
-SHA-1:                 473992 ops/s
-native FNV A 32:        30678 ops/s
-native FNV A 64:        25691 ops/s
-native FNV B 32:       204798 ops/s
-native FNV B 64:        26425 ops/s
-ffi FNV 32:           1324607 ops/s
-ffi FNV 64:           1108704 ops/s
-c-ext FNV 32:         3255939 ops/s
-c-ext FNV 64:         2060538 ops/s
-```
-
 ### Bloomfilter
-The Bloomfilter class is using the FFI FNV hashing by default, for speed and compatibility.
 
 ``` sh
 ruby benchmark/bloom_filter.rb 
@@ -233,7 +199,6 @@ BloomFilter m=2875518, k=13 include?       119154 ops/s
 ```
 
 ### ContinuousBloomfilter
-The ContinuousBloomfilter class is using the FFI FNV hashing by default, for speed and compatibility.
 
 ``` sh
 ruby benchmark/continuous_bloom_filter.rb 
