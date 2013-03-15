@@ -34,7 +34,7 @@ Bloom filters require the use of multiple (k) hash functions for each inserted e
 
 ## Installation
 
-Tested on **OSX 10.8.2** and **Linux 12.10** with
+Tested on **OSX 10.8.2** and **Ubuntu Linux 12.10** with
 - MRI Ruby 1.9.2, 1.9.3, 2.0.0
 - JRuby 1.7.2, 1.7.3
 
