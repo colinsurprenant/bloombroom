@@ -1,6 +1,6 @@
 require 'bundler/setup'
 require 'bloombroom'
-require 'benchmark/memory'
+require_relative 'memory'
 
 DEFAULT_M = 10000000
 DEFAULT_K = 1
