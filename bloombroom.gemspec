@@ -24,5 +24,5 @@ Gem::Specification.new do |s|
   
   s.add_dependency "ffi", ">= 1.0.0"
   s.add_dependency "ffi-compiler"
-  s.add_development_dependency "rspec", ">= 2.8.0"
+  s.add_development_dependency "rspec", "~> 2.8"
 end
