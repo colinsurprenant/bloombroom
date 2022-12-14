@@ -6,24 +6,24 @@ describe Bloombroom::ContinuousBloomFilter do
 
   it "should add" do
     bf = Bloombroom::ContinuousBloomFilter.new(*Bloombroom::BloomHelper.find_m_k(10, 0.001), 0)
-    bf.include?("abc1").should be_false
-    bf.include?("abc2").should be_false
-    bf.include?("abc3").should be_false
+    bf.include?("abc1").should be false
+    bf.include?("abc2").should be false
+    bf.include?("abc3").should be false
 
     bf.add("abc1")
-    bf.include?("abc1").should be_true
-    bf.include?("abc2").should be_false
-    bf.include?("abc3").should be_false
+    bf.include?("abc1").should be true
+    bf.include?("abc2").should be false
+    bf.include?("abc3").should be false
 
     bf.add("abc2")
-    bf.include?("abc1").should be_true
-    bf.include?("abc2").should be_true
-    bf.include?("abc3").should be_false
+    bf.include?("abc1").should be true
+    bf.include?("abc2").should be true
+    bf.include?("abc3").should be false
 
     bf.add("abc3")
-    bf.include?("abc1").should be_true
-    bf.include?("abc2").should be_true
-    bf.include?("abc3").should be_true
+    bf.include?("abc1").should be true
+    bf.include?("abc2").should be true
+    bf.include?("abc3").should be true
   end
 
   it "should find m and k" do
@@ -35,43 +35,43 @@ describe Bloombroom::ContinuousBloomFilter do
   it "should expire" do
     bf = Bloombroom::ContinuousBloomFilter.new(*Bloombroom::BloomHelper.find_m_k(100, 0.001), 0)
     bf.add("abc1")
-    bf.include?("abc1").should be_true
+    bf.include?("abc1").should be true
 
     bf.inc_time_slot
     bf.add("abc2")
-    bf.include?("abc1").should be_true
-    bf.include?("abc2").should be_true
-    
+    bf.include?("abc1").should be true
+    bf.include?("abc2").should be true
+
     bf.inc_time_slot
     bf.add("abc3")
-    bf.include?("abc1").should be_true
-    bf.include?("abc2").should be_true
-    bf.include?("abc3").should be_true
+    bf.include?("abc1").should be true
+    bf.include?("abc2").should be true
+    bf.include?("abc3").should be true
 
     bf.inc_time_slot
     bf.add("abc4")
-    bf.include?("abc1").should be_false
-    bf.include?("abc2").should be_true
-    bf.include?("abc3").should be_true
-    bf.include?("abc4").should be_true
+    bf.include?("abc1").should be false
+    bf.include?("abc2").should be true
+    bf.include?("abc3").should be true
+    bf.include?("abc4").should be true
 
     bf.inc_time_slot
-    bf.include?("abc1").should be_false
-    bf.include?("abc2").should be_false
-    bf.include?("abc3").should be_true
-    bf.include?("abc4").should be_true
+    bf.include?("abc1").should be false
+    bf.include?("abc2").should be false
+    bf.include?("abc3").should be true
+    bf.include?("abc4").should be true
 
     bf.inc_time_slot
-    bf.include?("abc1").should be_false
-    bf.include?("abc2").should be_false
-    bf.include?("abc3").should be_false
-    bf.include?("abc4").should be_true
+    bf.include?("abc1").should be false
+    bf.include?("abc2").should be false
+    bf.include?("abc3").should be false
+    bf.include?("abc4").should be true
 
     bf.inc_time_slot
-    bf.include?("abc1").should be_false
-    bf.include?("abc2").should be_false
-    bf.include?("abc3").should be_false
-    bf.include?("abc4").should be_false
+    bf.include?("abc1").should be false
+    bf.include?("abc2").should be false
+    bf.include?("abc3").should be false
+    bf.include?("abc4").should be false
 
     bf = Bloombroom::ContinuousBloomFilter.new(*Bloombroom::BloomHelper.find_m_k(100, 0.1), 0)
     keys = []
@@ -81,8 +81,8 @@ describe Bloombroom::ContinuousBloomFilter do
       alive = keys[[keys.size - 3, 0].max, 3]
       expired = keys - alive
 
-      alive.each{|key| bf.include?(key).should be_true}
-      expired.each{|key| bf.include?(key).should be_false}
+      alive.each{|key| bf.include?(key).should be true}
+      expired.each{|key| bf.include?(key).should be false}
 
       bf.inc_time_slot
     end

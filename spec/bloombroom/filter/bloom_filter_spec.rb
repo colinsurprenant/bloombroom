@@ -5,24 +5,24 @@ describe Bloombroom::BloomFilter do
 
   it "should add" do
     bf = Bloombroom::BloomFilter.new(1000, 5)
-    bf.include?("abc1").should be_false
-    bf.include?("abc2").should be_false
-    bf.include?("abc3").should be_false
+    bf.include?("abc1").should be false
+    bf.include?("abc2").should be false
+    bf.include?("abc3").should be false
 
     bf.add("abc1")
-    bf.include?("abc1").should be_true
-    bf.include?("abc2").should be_false
-    bf.include?("abc3").should be_false
+    bf.include?("abc1").should be true
+    bf.include?("abc2").should be false
+    bf.include?("abc3").should be false
 
     bf.add("abc2")
-    bf.include?("abc1").should be_true
-    bf.include?("abc2").should be_true
-    bf.include?("abc3").should be_false
+    bf.include?("abc1").should be true
+    bf.include?("abc2").should be true
+    bf.include?("abc3").should be false
 
     bf.add("abc3")
-    bf.include?("abc1").should be_true
-    bf.include?("abc2").should be_true
-    bf.include?("abc3").should be_true
+    bf.include?("abc1").should be true
+    bf.include?("abc2").should be true
+    bf.include?("abc3").should be true
   end
 
   it "should keep track of size" do
