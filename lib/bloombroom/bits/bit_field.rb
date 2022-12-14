@@ -1,5 +1,5 @@
 # inspired by Peter Cooper's http://snippets.dzone.com/posts/show/4234
-# 
+#
 # create a bit field 1000 bits wide
 #   bf = BitField.new(1000)
 #
@@ -15,14 +15,21 @@ module Bloombroom
   class BitField
     attr_reader :size
     include Enumerable
-    
+
     ELEMENT_WIDTH = 32
-    
-    def initialize(size)
-      @size = size
-      @field = Array.new(((size - 1) / ELEMENT_WIDTH) + 1, 0)
+    ELEMENT_PACK = 'L'
+
+    # @param size [Fixnum] filter size in bits
+    # @param bytes [String] the raw contents obtanined using {#to_bytes}
+    def self.from_bytes size, bytes
+      new size, bytes.unpack("#{ELEMENT_PACK}*")
     end
-    
+
+    def initialize(size, field=nil)
+      @size = size
+      @field = field || Array.new(((size - 1) / ELEMENT_WIDTH) + 1, 0)
+    end
+
     # set a bit
     # @param position [Fixnum] bit position
     # @param value [Fixnum] bit value 0/1
@@ -33,7 +40,7 @@ module Bloombroom
         @field[position / ELEMENT_WIDTH] |= 1 << (position % ELEMENT_WIDTH)
       end
     end
-    
+
     # read a bit
     # @param position [Fixnum] bit position
     # @return [Fixnum] bit value 0/1
@@ -62,7 +69,7 @@ module Bloombroom
     def include?(position)
       @field[position / ELEMENT_WIDTH] & 1 << (position % ELEMENT_WIDTH) > 0
     end
-    
+
     # check if bit is not set
     # @param position [Fixnum] bit position
     # @return [Boolean] true if bit is not set
@@ -75,12 +82,17 @@ module Bloombroom
     def each(&block)
       @size.times { |position| yield self[position] }
     end
-    
+
     # returns the field as a string like "0101010100111100," etc.
     def to_s
       inject("") { |a, b| a + b.to_s }
     end
-    
+
+    # return the field as a string containing the raw binary representation of it's content
+    def to_bytes
+      @field.pack "#{ELEMENT_PACK}*"
+    end
+
     # returns the total number of bits that are set
     # (the technique used here is about 6 times faster than using each or inject direct on the bitfield)
     def total_set
