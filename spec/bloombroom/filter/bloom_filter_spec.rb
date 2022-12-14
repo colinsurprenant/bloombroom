@@ -40,4 +40,16 @@ describe Bloombroom::BloomFilter do
     bf.k.should == 10
   end
 
+  it "should be (de)serializable using #bits.to_bytes and .from_bytes" do
+    bf = Bloombroom::BloomFilter.new 1000, 5
+    bf.add("abc1")
+    bf.add("abc2")
+    new_bf = Bloombroom::BloomFilter.from_bytes 1000, 5, bf.bits.to_bytes, bf.size
+    new_bf.m.should == bf.m
+    new_bf.k.should == bf.k
+    new_bf.size.should == bf.size
+    new_bf.include?('abc1').should be true
+    new_bf.include?('abc2').should be true
+    new_bf.include?('abc3').should be false
+  end
 end

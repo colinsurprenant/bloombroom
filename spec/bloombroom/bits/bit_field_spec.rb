@@ -38,7 +38,7 @@ describe Bloombroom::BitField do
     (0..99).each{|i| bf.include?(i).should be_false}
     (0..31).each{|i| bf.unset(i)}
     (0..99).each{|i| bf.include?(i).should be_false}
-    
+
     (0..31).each{|i| bf.set(i)}
     (0..31).each{|i| bf.include?(i).should be_true}
     (32..99).each{|i| bf.include?(i).should be_false}
@@ -96,6 +96,27 @@ describe Bloombroom::BitField do
     bf[1] = 1
     bf[5] = 1
     bf.to_s.should == "0100010000"
+  end
+
+  it 'should produce raw bytes using #to_bytes' do
+    bf = Bloombroom::BitField.new(10)
+    bf[1] = 1
+    bf[5] = 1
+    bf.to_bytes.should == "\"\x00\x00\x00"
+  end
+
+  it 'should be restored using .from_bytes' do
+    bf = Bloombroom::BitField.from_bytes 10, "\"\x00\x00\x00"
+    bf[0].should == 0
+    bf[1].should == 1
+    bf[2].should == 0
+    bf[3].should == 0
+    bf[4].should == 0
+    bf[5].should == 1
+    bf[6].should == 0
+    bf[7].should == 0
+    bf[8].should == 0
+    bf[9].should == 0
   end
 
   it "should report total_set" do

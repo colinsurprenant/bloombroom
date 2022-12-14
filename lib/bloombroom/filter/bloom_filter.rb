@@ -5,8 +5,8 @@ require 'bloombroom/filter/bloom_helper'
 module Bloombroom
 
   # BloomFilter false positive probability rule of thumb: see http://www.igvita.com/2008/12/27/scalable-datasets-bloom-filters-in-ruby/
-  # a Bloom filter with a 1% error rate and an optimal value for k only needs 9.6 bits per key, and each time we add 4.8 bits 
-  # per element we decrease the error rate by ten times. 
+  # a Bloom filter with a 1% error rate and an optimal value for k only needs 9.6 bits per key, and each time we add 4.8 bits
+  # per element we decrease the error rate by ten times.
   #
   # 10000 elements, 1% error rate: m = 10000 * 10 bits -> 12k of memory, k = 0.7 * (10000 * 10 bits / 10000) = 7 hash functions
   # 10000 elements, 0.1% error rate: m = 10000 * 15 bits -> 18k of memory, k = 0.7 * (10000 * 15 bits / 10000) = 11 hash functions
@@ -18,13 +18,21 @@ module Bloombroom
 
     # @param m [Fixnum] filter size in bits
     # @param k [Fixnum] number of hashing functions
-    def initialize(m, k)
-      @bits = BitField.new(m)
+    # @param bytes [String] raw bits as a string obtained using {BitField.to_bytes}
+    # @param size [Integer] the size of the filter contained in bytes
+    def self.from_bytes m, k, bytes, size=0
+      new m, k, BitField.from_bytes(m, bytes), size
+    end
+
+    # @param m [Fixnum] filter size in bits
+    # @param k [Fixnum] number of hashing functions
+    def initialize(m, k, bits=nil, size=0)
+      @bits = bits || BitField.new(m)
       @m = m
       @k = k
-      @size = 0
+      @size = size
     end
-    
+
     # @param key [String] the key to add in the filter
     # @return [Fixnum] the total number of keys in the filter
     def add(key)
@@ -32,7 +40,7 @@ module Bloombroom
       @size += 1
     end
     alias_method :<<, :add
-    
+
     # @param key [String] test for the inclusion if key in the filter
     # @return [Boolean] true if given key is present in the filter. false positive are possible and dependant on the m and k filter parameters.
     def include?(key)
@@ -40,6 +48,6 @@ module Bloombroom
       true
     end
     alias_method :[], :include?
-    
+
   end
 end
